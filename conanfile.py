@@ -10,7 +10,7 @@ class MyProject(ConanFile):
     requires = ["honesty/[>=0.0.0.dev1]", "cppaste/[>=0.0.0.dev1]"]
 
     def layout(self):
-        cmake_layout(self)
+        super().layout()
 
     def generate(self):
         deps = CMakeDeps(self)
