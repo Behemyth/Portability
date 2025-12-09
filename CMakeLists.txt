@@ -11,10 +11,10 @@ project(Portability
 	LANGUAGES CXX
 )
 
-option(BUILD_TESTING "Build the tests verifying Honesty functionality" ON)
+option(BUILD_TESTING "Build the tests verifying library functionality" ON)
 
 # Find Conan dependencies
-find_package(honesty REQUIRED)
+find_package(GTest REQUIRED)
 
 # Provide a namespaced alias
 add_library(portability STATIC)
