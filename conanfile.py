@@ -1,13 +1,13 @@
-from conan import ConanFile
+from conanfile_base import CPPythonBase
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
 from conan.tools.files import copy
 
 
-class MyProject(ConanFile):
+class MyProject(CPPythonBase):
     name = 'portability'
     version = '1.0'
     settings = 'os', 'compiler', 'build_type', 'arch'
-    requires = ["honesty/[>=0.0.0.dev1]", "cppaste/[>=0.0.0.dev1]"]
+    exports = "conanfile_base.py"
 
     def layout(self):
         super().layout()
@@ -17,7 +17,6 @@ class MyProject(ConanFile):
         deps.generate()
         tc = CMakeToolchain(self)
         tc.user_presets_path = None
-        tc.variables['BUILD_TESTING'] = 'OFF'
         tc.generate()
 
     def build(self):
