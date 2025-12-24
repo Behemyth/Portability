@@ -14,8 +14,8 @@ dependencies = []
 requires-python = ">=3.14"
 
 [project.urls]
-homepage = "https://github.com/synodic/Portability"
-repository = "https://github.com/synodic/Portability"
+homepage = "https://github.com/synodic/portability"
+repository = "https://github.com/synodic/portability"
 
 [dependency-groups]
 build = ["cppython[cmake,conan,git]>=0.9.15.dev3"]
