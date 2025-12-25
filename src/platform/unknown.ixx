@@ -5,10 +5,10 @@ import std;
 namespace port
 {
 
-// Unique identifier for compile-time platform checks
-export inline constexpr std::string_view PlatformId = "unknown";
+	// Unique identifier for compile-time platform checks
+	export inline constexpr std::string_view PlatformID = "unknown";
 
-// Human-readable platform name for display/logging
-export consteval std::string_view PlatformName() noexcept { return "Unknown"; }
+	// Human-readable platform name for display/logging
+	export consteval std::string_view PlatformName() noexcept { return "Unknown"; }
 
 }

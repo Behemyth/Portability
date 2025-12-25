@@ -6,7 +6,7 @@ Cross-platform detection and compiler macros for C++.
 import synodic.portability;
 #include <portability/macros.h>
 
-if constexpr (port::PlatformId == "windows") { }
+if constexpr (port::PlatformID == "windows") { }
 
 PORT_ALWAYS_INLINE void fast() { }
 ```

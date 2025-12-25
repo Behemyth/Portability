@@ -5,56 +5,56 @@ import std;
 namespace port
 {
 
-// ============================================================================
-// Assertions Detection
-// ============================================================================
+	// ============================================================================
+	// Assertions Detection
+	// ============================================================================
 
-/// Whether assertions (assert()) are enabled in this build
-export inline constexpr bool HasAssertions =
+	/// Whether assertions (assert()) are enabled in this build
+	export inline constexpr bool HasAssertions =
 #if defined(NDEBUG)
-	false;
+		false;
 #else
-	true;
+		true;
 #endif
 
-// ============================================================================
-// Sanitizer Detection
-// ============================================================================
+	// ============================================================================
+	// Sanitizer Detection
+	// ============================================================================
 
-export inline constexpr bool HasAddressSanitizer =
+	export inline constexpr bool HasAddressSanitizer =
 #if defined(__SANITIZE_ADDRESS__)
-	true;
+		true;
 #elif defined(__has_feature)
-	__has_feature(address_sanitizer);
+		__has_feature(address_sanitizer);
 #else
-	false;
+		false;
 #endif
 
-export inline constexpr bool HasThreadSanitizer =
+	export inline constexpr bool HasThreadSanitizer =
 #if defined(__SANITIZE_THREAD__)
-	true;
+		true;
 #elif defined(__has_feature)
-	__has_feature(thread_sanitizer);
+		__has_feature(thread_sanitizer);
 #else
-	false;
+		false;
 #endif
 
-export inline constexpr bool HasUndefinedBehaviorSanitizer =
+	export inline constexpr bool HasUndefinedBehaviorSanitizer =
 #if defined(__has_feature)
-	__has_feature(undefined_behavior_sanitizer);
+		__has_feature(undefined_behavior_sanitizer);
 #else
-	false;
+		false;
 #endif
 
-export inline constexpr bool HasMemorySanitizer =
+	export inline constexpr bool HasMemorySanitizer =
 #if defined(__has_feature)
-	__has_feature(memory_sanitizer);
+		__has_feature(memory_sanitizer);
 #else
-	false;
+		false;
 #endif
 
-export inline constexpr bool HasAnySanitizer = 
-	HasAddressSanitizer || HasThreadSanitizer || 
-	HasUndefinedBehaviorSanitizer || HasMemorySanitizer;
+	export inline constexpr bool HasAnySanitizer =
+		HasAddressSanitizer || HasThreadSanitizer ||
+		HasUndefinedBehaviorSanitizer || HasMemorySanitizer;
 
 } // namespace port
