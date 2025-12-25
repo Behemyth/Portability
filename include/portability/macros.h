@@ -5,57 +5,49 @@
 // ============================================================================
 
 #if defined(_MSC_VER)
-	#define PORTABILITY_ALWAYS_INLINE __forceinline
+	#define PORT_ALWAYS_INLINE __forceinline
 #elif defined(__clang__) || defined(__GNUC__)
-	#define PORTABILITY_ALWAYS_INLINE [[gnu::always_inline]] inline
+	#define PORT_ALWAYS_INLINE [[gnu::always_inline]] inline
 #else
-	#define PORTABILITY_ALWAYS_INLINE inline
+	#define PORT_ALWAYS_INLINE inline
 #endif
 
 #if defined(_MSC_VER)
-	#define PORTABILITY_NOINLINE __declspec(noinline)
+	#define PORT_NOINLINE __declspec(noinline)
 #elif defined(__clang__) || defined(__GNUC__)
-	#define PORTABILITY_NOINLINE [[gnu::noinline]]
+	#define PORT_NOINLINE [[gnu::noinline]]
 #else
-	#define PORTABILITY_NOINLINE
+	#define PORT_NOINLINE
 #endif
 
 #if defined(__clang__) || defined(__GNUC__)
-	#define PORTABILITY_FLATTEN [[gnu::flatten]]
+	#define PORT_FLATTEN [[gnu::flatten]]
 #elif defined(_MSC_VER) && _MSC_VER >= 1935
-	#define PORTABILITY_FLATTEN [[msvc::forceinline_calls]]
+	#define PORT_FLATTEN [[msvc::forceinline_calls]]
 #else
-	#define PORTABILITY_FLATTEN
+	#define PORT_FLATTEN
 #endif
 
 // ============================================================================
 // Optimization Hints
 // ============================================================================
 
-#if defined(__clang__) || defined(__GNUC__)
-	#define PORTABILITY_LIKELY(x)   __builtin_expect(!!(x), 1)
-	#define PORTABILITY_UNLIKELY(x) __builtin_expect(!!(x), 0)
-#else
-	#define PORTABILITY_LIKELY(x)   (x)
-	#define PORTABILITY_UNLIKELY(x) (x)
-#endif
-
 #if defined(_MSC_VER)
-	#define PORTABILITY_ASSUME(expr) __assume(expr)
+	#define PORT_ASSUME(expr) __assume(expr)
 #elif defined(__clang__)
-	#define PORTABILITY_ASSUME(expr) __builtin_assume(expr)
+	#define PORT_ASSUME(expr) __builtin_assume(expr)
 #elif defined(__GNUC__) && __GNUC__ >= 13
-	#define PORTABILITY_ASSUME(expr) __attribute__((assume(expr)))
+	#define PORT_ASSUME(expr) __attribute__((assume(expr)))
 #else
-	#define PORTABILITY_ASSUME(expr) ((void)0)
+	#define PORT_ASSUME(expr) ((void)0)
 #endif
 
 #if defined(__clang__) || defined(__GNUC__)
-	#define PORTABILITY_UNREACHABLE() __builtin_unreachable()
+	#define PORT_UNREACHABLE() __builtin_unreachable()
 #elif defined(_MSC_VER)
-	#define PORTABILITY_UNREACHABLE() __assume(0)
+	#define PORT_UNREACHABLE() __assume(0)
 #else
-	#define PORTABILITY_UNREACHABLE() ((void)0)
+	#define PORT_UNREACHABLE() ((void)0)
 #endif
 
 // ============================================================================
@@ -63,11 +55,11 @@
 // ============================================================================
 
 #if defined(__clang__) || defined(__GNUC__)
-	#define PORTABILITY_COLD [[gnu::cold]]
-	#define PORTABILITY_HOT  [[gnu::hot]]
+	#define PORT_COLD [[gnu::cold]]
+	#define PORT_HOT  [[gnu::hot]]
 #else
-	#define PORTABILITY_COLD
-	#define PORTABILITY_HOT
+	#define PORT_COLD
+	#define PORT_HOT
 #endif
 
 // ============================================================================
@@ -75,11 +67,11 @@
 // ============================================================================
 
 #if defined(__clang__) || defined(__GNUC__)
-	#define PORTABILITY_PURE  [[gnu::pure]]
-	#define PORTABILITY_CONST [[gnu::const]]
+	#define PORT_PURE  [[gnu::pure]]
+	#define PORT_CONST [[gnu::const]]
 #else
-	#define PORTABILITY_PURE
-	#define PORTABILITY_CONST
+	#define PORT_PURE
+	#define PORT_CONST
 #endif
 
 // ============================================================================
@@ -87,11 +79,11 @@
 // ============================================================================
 
 #if defined(_MSC_VER)
-	#define PORTABILITY_RESTRICT __restrict
+	#define PORT_RESTRICT __restrict
 #elif defined(__clang__) || defined(__GNUC__)
-	#define PORTABILITY_RESTRICT __restrict__
+	#define PORT_RESTRICT __restrict__
 #else
-	#define PORTABILITY_RESTRICT
+	#define PORT_RESTRICT
 #endif
 
 // ============================================================================
@@ -99,17 +91,17 @@
 // ============================================================================
 
 #if defined(_MSC_VER)
-	#define PORTABILITY_PACKED_BEGIN __pragma(pack(push, 1))
-	#define PORTABILITY_PACKED_END   __pragma(pack(pop))
-	#define PORTABILITY_PACKED_ATTR
+	#define PORT_PACKED_BEGIN __pragma(pack(push, 1))
+	#define PORT_PACKED_END   __pragma(pack(pop))
+	#define PORT_PACKED_ATTR
 #elif defined(__clang__) || defined(__GNUC__)
-	#define PORTABILITY_PACKED_BEGIN
-	#define PORTABILITY_PACKED_END
-	#define PORTABILITY_PACKED_ATTR __attribute__((packed))
+	#define PORT_PACKED_BEGIN
+	#define PORT_PACKED_END
+	#define PORT_PACKED_ATTR __attribute__((packed))
 #else
-	#define PORTABILITY_PACKED_BEGIN
-	#define PORTABILITY_PACKED_END
-	#define PORTABILITY_PACKED_ATTR
+	#define PORT_PACKED_BEGIN
+	#define PORT_PACKED_END
+	#define PORT_PACKED_ATTR
 #endif
 
 // ============================================================================
@@ -117,82 +109,65 @@
 // ============================================================================
 
 #if defined(_MSC_VER)
-	#define PORTABILITY_DIAGNOSTIC_PUSH __pragma(warning(push))
-	#define PORTABILITY_DIAGNOSTIC_POP  __pragma(warning(pop))
+	#define PORT_DIAGNOSTIC_PUSH __pragma(warning(push))
+	#define PORT_DIAGNOSTIC_POP  __pragma(warning(pop))
 #elif defined(__clang__) || defined(__GNUC__)
-	#define PORTABILITY_DIAGNOSTIC_PUSH _Pragma("GCC diagnostic push")
-	#define PORTABILITY_DIAGNOSTIC_POP  _Pragma("GCC diagnostic pop")
+	#define PORT_DIAGNOSTIC_PUSH _Pragma("GCC diagnostic push")
+	#define PORT_DIAGNOSTIC_POP  _Pragma("GCC diagnostic pop")
 #else
-	#define PORTABILITY_DIAGNOSTIC_PUSH
-	#define PORTABILITY_DIAGNOSTIC_POP
+	#define PORT_DIAGNOSTIC_PUSH
+	#define PORT_DIAGNOSTIC_POP
 #endif
 
-#define PORTABILITY_PRAGMA_IMPL(x) _Pragma(#x)
-#define PORTABILITY_PRAGMA(x)      PORTABILITY_PRAGMA_IMPL(x)
+#define PORT_PRAGMA_IMPL(x) _Pragma(#x)
+#define PORT_PRAGMA(x)      PORT_PRAGMA_IMPL(x)
 
 #if defined(_MSC_VER)
-	#define PORTABILITY_MSVC_IGNORE(num)   __pragma(warning(disable : num))
-	#define PORTABILITY_GCC_IGNORE(name)
-	#define PORTABILITY_CLANG_IGNORE(name)
+	#define PORT_MSVC_IGNORE(num)  __pragma(warning(disable : num))
+	#define PORT_GCC_IGNORE(name)
+	#define PORT_CLANG_IGNORE(name)
 #elif defined(__clang__)
-	#define PORTABILITY_MSVC_IGNORE(num)
-	#define PORTABILITY_GCC_IGNORE(name)
-	#define PORTABILITY_CLANG_IGNORE(name) PORTABILITY_PRAGMA(clang diagnostic ignored name)
+	#define PORT_MSVC_IGNORE(num)
+	#define PORT_GCC_IGNORE(name)
+	#define PORT_CLANG_IGNORE(name) PORT_PRAGMA(clang diagnostic ignored name)
 #elif defined(__GNUC__)
-	#define PORTABILITY_MSVC_IGNORE(num)
-	#define PORTABILITY_GCC_IGNORE(name)   PORTABILITY_PRAGMA(GCC diagnostic ignored name)
-	#define PORTABILITY_CLANG_IGNORE(name)
+	#define PORT_MSVC_IGNORE(num)
+	#define PORT_GCC_IGNORE(name)  PORT_PRAGMA(GCC diagnostic ignored name)
+	#define PORT_CLANG_IGNORE(name)
 #else
-	#define PORTABILITY_MSVC_IGNORE(num)
-	#define PORTABILITY_GCC_IGNORE(name)
-	#define PORTABILITY_CLANG_IGNORE(name)
+	#define PORT_MSVC_IGNORE(num)
+	#define PORT_GCC_IGNORE(name)
+	#define PORT_CLANG_IGNORE(name)
 #endif
 
-#define PORTABILITY_IGNORE_DEPRECATED       \
-	PORTABILITY_MSVC_IGNORE(4996)           \
-	PORTABILITY_GCC_IGNORE("-Wdeprecated-declarations") \
-	PORTABILITY_CLANG_IGNORE("-Wdeprecated-declarations")
+#define PORT_IGNORE_DEPRECATED       \
+	PORT_MSVC_IGNORE(4996)           \
+	PORT_GCC_IGNORE("-Wdeprecated-declarations") \
+	PORT_CLANG_IGNORE("-Wdeprecated-declarations")
 
-#define PORTABILITY_IGNORE_UNUSED_PARAMETER \
-	PORTABILITY_MSVC_IGNORE(4100)           \
-	PORTABILITY_GCC_IGNORE("-Wunused-parameter") \
-	PORTABILITY_CLANG_IGNORE("-Wunused-parameter")
+#define PORT_IGNORE_UNUSED_PARAMETER \
+	PORT_MSVC_IGNORE(4100)           \
+	PORT_GCC_IGNORE("-Wunused-parameter") \
+	PORT_CLANG_IGNORE("-Wunused-parameter")
 
-#define PORTABILITY_IGNORE_SHADOW           \
-	PORTABILITY_MSVC_IGNORE(4456)           \
-	PORTABILITY_MSVC_IGNORE(4457)           \
-	PORTABILITY_GCC_IGNORE("-Wshadow")      \
-	PORTABILITY_CLANG_IGNORE("-Wshadow")
+#define PORT_IGNORE_SHADOW           \
+	PORT_MSVC_IGNORE(4456)           \
+	PORT_MSVC_IGNORE(4457)           \
+	PORT_GCC_IGNORE("-Wshadow")      \
+	PORT_CLANG_IGNORE("-Wshadow")
 
 // ============================================================================
 // Optimization Fence (for DoNotOptimizeAway implementations)
 // ============================================================================
 
 #if defined(__clang__) || defined(__GNUC__)
-	#define PORTABILITY_ASM_FENCE_REGISTER(value) __asm__ __volatile__("" : : "r"(value))
-	#define PORTABILITY_ASM_FENCE_MEMORY(value)   __asm__ __volatile__("" : : "m"(value) : "memory")
-	#define PORTABILITY_ASM_CLOBBER_MEMORY()      __asm__ __volatile__("" : : : "memory")
+	#define PORT_ASM_FENCE_REGISTER(value) __asm__ __volatile__("" : : "r"(value))
+	#define PORT_ASM_FENCE_MEMORY(value)   __asm__ __volatile__("" : : "m"(value) : "memory")
+	#define PORT_ASM_CLOBBER_MEMORY()      __asm__ __volatile__("" : : : "memory")
 #else
-	#define PORTABILITY_ASM_FENCE_REGISTER(value)
-	#define PORTABILITY_ASM_FENCE_MEMORY(value)
-	#define PORTABILITY_ASM_CLOBBER_MEMORY()
-#endif
-
-// ============================================================================
-// Debugger
-// ============================================================================
-
-#if defined(_MSC_VER)
-	#define PORTABILITY_DEBUGBREAK() __debugbreak()
-#elif defined(__clang__)
-	#define PORTABILITY_DEBUGBREAK() __builtin_debugtrap()
-#elif defined(__GNUC__) && (defined(__i386__) || defined(__x86_64__))
-	#define PORTABILITY_DEBUGBREAK() __asm__ __volatile__("int3")
-#elif defined(__GNUC__)
-	#define PORTABILITY_DEBUGBREAK() __builtin_trap()
-#else
-	#include <csignal>
-	#define PORTABILITY_DEBUGBREAK() std::raise(SIGTRAP)
+	#define PORT_ASM_FENCE_REGISTER(value)
+	#define PORT_ASM_FENCE_MEMORY(value)
+	#define PORT_ASM_CLOBBER_MEMORY()
 #endif
 
 // ============================================================================
@@ -200,17 +175,17 @@
 // ============================================================================
 
 #if defined(_WIN32)
-	#define PORTABILITY_EXPORT __declspec(dllexport)
-	#define PORTABILITY_IMPORT __declspec(dllimport)
-	#define PORTABILITY_HIDDEN
+	#define PORT_EXPORT __declspec(dllexport)
+	#define PORT_IMPORT __declspec(dllimport)
+	#define PORT_HIDDEN
 #elif defined(__clang__) || defined(__GNUC__)
-	#define PORTABILITY_EXPORT __attribute__((visibility("default")))
-	#define PORTABILITY_IMPORT __attribute__((visibility("default")))
-	#define PORTABILITY_HIDDEN __attribute__((visibility("hidden")))
+	#define PORT_EXPORT __attribute__((visibility("default")))
+	#define PORT_IMPORT __attribute__((visibility("default")))
+	#define PORT_HIDDEN __attribute__((visibility("hidden")))
 #else
-	#define PORTABILITY_EXPORT
-	#define PORTABILITY_IMPORT
-	#define PORTABILITY_HIDDEN
+	#define PORT_EXPORT
+	#define PORT_IMPORT
+	#define PORT_HIDDEN
 #endif
 
 // ============================================================================
@@ -218,9 +193,9 @@
 // ============================================================================
 
 #if defined(NDEBUG)
-	#define PORTABILITY_HAS_ASSERTIONS 0
+	#define PORT_HAS_ASSERTIONS 0
 #else
-	#define PORTABILITY_HAS_ASSERTIONS 1
+	#define PORT_HAS_ASSERTIONS 1
 #endif
 
 // ============================================================================
@@ -228,48 +203,48 @@
 // ============================================================================
 
 #if defined(__SANITIZE_ADDRESS__)
-	#define PORTABILITY_HAS_ASAN 1
+	#define PORT_HAS_ASAN 1
 #elif defined(__has_feature)
 	#if __has_feature(address_sanitizer)
-		#define PORTABILITY_HAS_ASAN 1
+		#define PORT_HAS_ASAN 1
 	#else
-		#define PORTABILITY_HAS_ASAN 0
+		#define PORT_HAS_ASAN 0
 	#endif
 #else
-	#define PORTABILITY_HAS_ASAN 0
+	#define PORT_HAS_ASAN 0
 #endif
 
 #if defined(__SANITIZE_THREAD__)
-	#define PORTABILITY_HAS_TSAN 1
+	#define PORT_HAS_TSAN 1
 #elif defined(__has_feature)
 	#if __has_feature(thread_sanitizer)
-		#define PORTABILITY_HAS_TSAN 1
+		#define PORT_HAS_TSAN 1
 	#else
-		#define PORTABILITY_HAS_TSAN 0
+		#define PORT_HAS_TSAN 0
 	#endif
 #else
-	#define PORTABILITY_HAS_TSAN 0
+	#define PORT_HAS_TSAN 0
 #endif
 
 #if defined(__has_feature)
 	#if __has_feature(undefined_behavior_sanitizer)
-		#define PORTABILITY_HAS_UBSAN 1
+		#define PORT_HAS_UBSAN 1
 	#else
-		#define PORTABILITY_HAS_UBSAN 0
+		#define PORT_HAS_UBSAN 0
 	#endif
 #else
-	#define PORTABILITY_HAS_UBSAN 0
+	#define PORT_HAS_UBSAN 0
 #endif
 
 #if defined(__has_feature)
 	#if __has_feature(memory_sanitizer)
-		#define PORTABILITY_HAS_MSAN 1
+		#define PORT_HAS_MSAN 1
 	#else
-		#define PORTABILITY_HAS_MSAN 0
+		#define PORT_HAS_MSAN 0
 	#endif
 #else
-	#define PORTABILITY_HAS_MSAN 0
+	#define PORT_HAS_MSAN 0
 #endif
 
-#define PORTABILITY_HAS_ANY_SANITIZER \
-	(PORTABILITY_HAS_ASAN || PORTABILITY_HAS_TSAN || PORTABILITY_HAS_UBSAN || PORTABILITY_HAS_MSAN)
+#define PORT_HAS_ANY_SANITIZER \
+	(PORT_HAS_ASAN || PORT_HAS_TSAN || PORT_HAS_UBSAN || PORT_HAS_MSAN)

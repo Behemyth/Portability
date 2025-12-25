@@ -1,76 +1,28 @@
 # Modules
 
-Import with `import synodic.portability;` or import individual modules.
+```cpp
+import synodic.portability;
+```
 
 ## Platform
 
-**Module:** `synodic.portability.platform`
-
-| Export | Type | Description |
-|--------|------|-------------|
-| `PlatformId` | `std::string_view` | Unique identifier: `"windows"`, `"linux"`, `"macos"`, or custom |
-| `PlatformName()` | `consteval` | Human-readable name: `"Windows"`, `"Linux"`, `"macOS"`, etc. |
-
-```cpp
-if constexpr (port::PlatformId == "windows") {
-    // Windows-specific code
-}
-```
+`port::PlatformId` — `"windows"`, `"linux"`, `"macos"`  
+`port::PlatformName()` — `"Windows"`, `"Linux"`, `"macOS"`
 
 ## Compiler
 
-**Module:** `synodic.portability.compiler`
+`port::CompilerId` — `"msvc"`, `"clang"`, `"gcc"`  
+`port::CompilerName()` — `"MSVC"`, `"Clang"`, `"GCC"`  
+`port::CompilerVersion()` — `std::tuple<int, int, int>`
 
-| Export | Type | Description |
-|--------|------|-------------|
-| `CompilerId` | `std::string_view` | Unique identifier: `"msvc"`, `"clang"`, `"gcc"`, or custom |
-| `CompilerName()` | `consteval` | Human-readable name: `"MSVC"`, `"Clang"`, `"GCC"`, etc. |
-| `CompilerVersion()` | `consteval` | Returns `std::tuple<int, int, int>` (major, minor, patch) |
-
-### Capability Flags
-
-| Export | Description |
-|--------|-------------|
-| `HasGnuAsm` | GNU inline assembly syntax supported |
-| `HasGnuAttributes` | GNU-style attributes (`__attribute__`) supported |
-| `HasForceInline` | `__forceinline` supported |
-| `HasPragmaOptimize` | `#pragma optimize` supported |
-
-```cpp
-if constexpr (port::HasGnuAsm) {
-    __asm__ __volatile__("" : : "r"(value));
-}
-```
+Capabilities: `HasGnuAsm`, `HasGnuAttributes`, `HasForceInline`, `HasPragmaOptimize`
 
 ## Architecture
 
-**Module:** `synodic.portability.architecture`
-
-| Export | Type | Description |
-|--------|------|-------------|
-| `ArchitectureId` | `std::string_view` | Unique identifier: `"x64"`, `"x86"`, `"arm64"`, `"arm"`, or custom |
-| `ArchitectureName()` | `consteval` | Human-readable name: `"x86-64"`, `"x86"`, `"ARM64"`, `"ARM"`, etc. |
-| `PointerSize` | `std::size_t` | Size of pointer in bytes (4 or 8) |
-
-```cpp
-static_assert(port::PointerSize == 8, "64-bit required");
-```
+`port::ArchitectureId` — `"x64"`, `"x86"`, `"arm64"`, `"arm"`  
+`port::ArchitectureName()` — `"x86-64"`, `"x86"`, `"ARM64"`, `"ARM"`  
+`port::PointerSize` — `4` or `8`
 
 ## Build
 
-**Module:** `synodic.portability.build`
-
-| Export | Type | Description |
-|--------|------|-------------|
-| `HasAssertions` | `bool` | `true` if `NDEBUG` is not defined |
-| `HasAddressSanitizer` | `bool` | ASan enabled |
-| `HasThreadSanitizer` | `bool` | TSan enabled |
-| `HasUndefinedBehaviorSanitizer` | `bool` | UBSan enabled |
-| `HasMemorySanitizer` | `bool` | MSan enabled |
-| `HasAnySanitizer` | `bool` | Any sanitizer enabled |
-
-```cpp
-if constexpr (port::HasAnySanitizer) {
-    // Skip performance-sensitive code path under sanitizers
-}
-```
+`port::HasAssertions`, `port::HasAddressSanitizer`, `port::HasThreadSanitizer`, `port::HasUndefinedBehaviorSanitizer`, `port::HasMemorySanitizer`, `port::HasAnySanitizer`

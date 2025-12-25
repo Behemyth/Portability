@@ -1,13 +1,10 @@
 # Portability
 
-A C++23 library providing cross-platform detection and compiler-specific macros.
+A C++ library providing cross-platform detection, macros, and interfaces.
 
 ## Features
 
-- **C++23 Modules** — Clean `import synodic.portability;` interface
-- **String-based Identity** — `if constexpr (port::PlatformId == "windows")` works at compile-time
-- **Extensible** — Add custom platforms/compilers without modifying the library
-- **Portable Macros** — Compiler-specific attributes with fallbacks
+- **TODO**
 
 ## Usage
 
@@ -15,7 +12,7 @@ A C++23 library providing cross-platform detection and compiler-specific macros.
 import synodic.portability;
 #include <portability/macros.h>
 
-PORTABILITY_ALWAYS_INLINE void process() {
+PORT_ALWAYS_INLINE void process() {
     if constexpr (port::CompilerId == "msvc") {
         // MSVC-specific optimization
     }
