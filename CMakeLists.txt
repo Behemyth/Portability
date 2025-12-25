@@ -33,6 +33,15 @@ target_compile_features(portability PUBLIC cxx_std_23)
 # Link dependencies
 target_link_libraries(portability)
 
+# Public headers (macros that cannot be exported from modules)
+target_sources(portability
+	PUBLIC
+	FILE_SET HEADERS
+	BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include
+	FILES
+		include/portability/macros.h
+)
+
 add_subdirectory(
 	src
 )
@@ -76,13 +85,9 @@ install(TARGETS portability
 	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-
+	FILE_SET HEADERS DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 	FILE_SET CXX_MODULES DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/portability
 )
-
-# Create empty include directory to satisfy CMake's exported target requirements
-# (module-only library with no headers, but CMake expects the directory to exist)
-install(DIRECTORY DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 # Export and package configuration
 install(EXPORT portabilityTargets
